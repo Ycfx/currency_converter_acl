@@ -1,0 +1,125 @@
+body
+{
+    font-family: Verdana,Geneva,sans-serif !important; 
+    background-color: #3464E2
+}
+
+.title
+{
+    color: #fff;
+}
+
+.sub-title
+{
+    color: #fff;
+}
+.box {
+    border-radius: 3px;
+    padding: 32px 10px;
+    max-width: 500px;
+    margin : 0 auto
+}
+
+#box-result{
+    max-width: 500px;
+    margin : 0 auto;
+    text-align: center;
+    margin:20px 10px 45px 10px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: 600
+}
+
+/**** Input *****/
+.input-main{
+    font-size: 20px;
+    height: 50px;
+    line-height: 1.8;
+    color: #323232;
+    border-bottom: none;
+    padding: 8px 16px;
+    border: 0;
+    width: 100%;
+    -webkit-box-shadow: 0px 2px 9px rgba(0,0,0,0.35);
+    box-shadow: 0px 2px 9px rgba(0,0,0,0.35);
+    margin-bottom:20px;
+}
+
+/**** SELECT *****/
+.select {
+    max-width: unset;
+    background: #fff;
+    outline: none;
+    -webkit-box-shadow: 0px 2px 9px rgba(0,0,0,0.35);
+    box-shadow: 0px 2px 9px rgba(0,0,0,0.35);
+    margin-bottom:20px;
+}
+
+.select_placeholder{
+    color: #828282 !important
+}
+
+.select_clear {
+    font-size: 13px;
+    position: absolute;
+    top: 15px;
+    right: 14px;
+    color: red;
+    cursor: pointer;
+}
+
+.select .value {
+    font-size: 20px;
+    height: 50px;
+    line-height: 1.8;
+    color : #323232;
+    border-bottom:none;
+    padding: 8px 16px
+}
+
+.select .value::before {
+    right: 15px;
+    border-color: #323232 transparent transparent;
+    border-width: 6px;
+    border-color: none;
+}
+.select .list .filter{
+    padding: 0
+}
+.select .list .filter input {
+ 
+    padding: 16px;
+    font-size: 15px;
+}
+
+.select .list ul li:hover {
+    background-color: #00a65a !important;
+}
+
+/****** BUTTONS ********/
+.main-Button{
+    box-shadow: 0 0 1px rgba(0,0,0,.12), 0 1px 1px rgba(0,0,0,.24);
+    background-color: #00a65a;
+    position: relative;
+    width: 100%;
+    -webkit-appearance: none; 
+    -moz-appearance: none;
+    appearance: none;
+    border: 0;
+    font: inherit;
+    color:#fff;
+    padding: 0 32px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all .25s cubic-bezier(.645,.045,.355,1);
+    height: 48px;
+}
+
+.main-Button:hover {
+    background-color: #eee;
+    color: #757575;
+}
+
+.main-Button:focus,input:focus {
+    outline: none;
+}

@@ -1,7 +1,10 @@
 body
 {
     font-family: Verdana,Geneva,sans-serif !important; 
-    background-color: #3464E2
+    background-color: #3464E2;
+    position: relative;
+    padding-bottom: 80px;
+    margin:0
 }
 
 .title
@@ -122,4 +125,33 @@ body
 
 .main-Button:focus,input:focus {
     outline: none;
+}
+
+/**** Toast ******/
+#toast{
+    display: flex;
+    position: absolute;
+    bottom: 0px;
+    height: 50px;
+    width: 100%;
+    background-color: #323232;
+    opacity: 0.8;
+    color: #fff;
+    padding: 0 15px;
+    align-items: center;
+    font-size: 14px;
+}
+
+#toast::before
+{
+    position: absolute;
+    right: 10px;
+    content: '×';
+    padding: 10px;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+.hide{
+    display: none !important;
 }

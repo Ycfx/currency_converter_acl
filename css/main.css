@@ -130,7 +130,7 @@ body
 /**** Toast ******/
 #toast{
     display: flex;
-    position: absolute;
+    position: fixed;
     bottom: 0px;
     height: 50px;
     width: 100%;
@@ -142,14 +142,22 @@ body
     font-size: 14px;
 }
 
-#toast::before
+#toast-dismiss
 {
     position: absolute;
-    right: 10px;
-    content: '×';
+    right: 0px;
+    color:red;
     padding: 10px;
     cursor: pointer;
-    font-size: 17px;
+}
+
+#toast-refresh
+{
+    position: absolute;
+    right: 70px;
+    color:green;
+    padding: 10px;
+    cursor: pointer;
 }
 
 .hide{

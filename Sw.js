@@ -1,29 +1,31 @@
 var staticCacheName = 'cconverter-static-v1';
 
-self.addEventListener('install', function(event) {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(staticCacheName).then(function(cache) {
+    caches.open(staticCacheName).then((cache) => {
       return cache.addAll([
         'index.html',
         './',
-        'libs/select/select.min.js',
+        'js/Register.js',
+        'js/Toast.js',
         'js/main.js',
         'css/main.css',
-        'libs/select/select.min.css'
+        'libs/select/select.min.css',
+        'libs/select/select.min.js'
       ]);
     })
   );
 });
 
 
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(function(cacheNames) {
+    caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames.filter(function(cacheName) {
+        cacheNames.filter((cacheName) => {
           return cacheName.startsWith('cconverter-') &&
                  cacheName != staticCacheName;
-        }).map(function(cacheName) {
+        }).map((cacheName) => {
           return caches.delete(cacheName);
         })
       );
@@ -31,15 +33,15 @@ self.addEventListener('activate', function(event) {
   );
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', (event) => {
     event.respondWith(
-      caches.match(event.request).then(function(response) {
+      caches.match(event.request).then((response) => {
         return response || fetch(event.request);
       }) 
     );
 });
 
-self.addEventListener('message', function(event) {
+self.addEventListener('message', (event) => {
   if (event.data.action === 'skipWaiting') {
     self.skipWaiting();
   }

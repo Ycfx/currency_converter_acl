@@ -5,8 +5,6 @@
     <title>Currency converter - ACL</title>
     <link rel="stylesheet" href="libs/select/select.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="libs/select/select.min.js"></script>
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
   </head>
     
   <body>
@@ -54,18 +52,6 @@
         <button class="main-Button">Convert</button>
    
     </div>
-    <script>
-        var from_select = new Select('#from-select',{
-                                    filtered: 'auto',
-                                    filter_threshold: 8,
-                                    filter_placeholder: 'Filter'
-                                });
-                                var to_select = new Select('#to-select',{
-                                    filtered: 'auto',
-                                    filter_threshold: 8,
-                                    filter_placeholder: 'Filter'
-                                });
-    </script>
-    <div id="toast" class="hide">The app is offline</div>
+    <script src="js/main.js" type="module"></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 
 import Select from '../libs/select/select.min.js'
 import Toast from './Toast.js'
+import '../libs/idb/idb.js';
 
 class Converter {
     constructor() {
@@ -18,38 +19,60 @@ class Converter {
         go_convert.addEventListener('click', (event) => {
             this.convert()
         });
+
+        this._dbPromise = this.openDatabase();
     }
 
     init(){
-        this.fillCurrencies()
+        this._dbPromise.then(db => {
+            return db.transaction('currencies')
+              .objectStore('currencies').getAll();
+        }).then(elements => {
+            this.fillSelect(elements)
+            this.fetchCurrencies()
+        });
     }
 
-    fillCurrencies()
+    fetchCurrencies()
     {
         this.showLoader()
-
         fetch(`${this.base_url}/currencies`)
         .then((response) => response.json())
         .then((response) => {
-            for(const [key,value] of Object.entries(response.results))
-            {
-                let option = document.createElement("option");
-                option.value = key;
-                option.text = `${key} - ${value.currencyName}`;
-                this.from_select.add(option);
-                this.to_select.add(option.cloneNode(true));
-            };
-            this.buildSelect()
-            this.hideLoader()
+            let this2 = this
+            this._dbPromise.then((db) => {
+                const tx = db.transaction('currencies', 'readwrite');
+                const currenciesStore = tx.objectStore('currencies');
+
+                for(const [key,value] of Object.entries(response.results))
+                    currenciesStore.put(value)
+
+                this2.fillSelect(Object.values(response.results))
+                this2.buildSelectUI()
+                this2.hideLoader()
+            })
         })
         .catch(() => {
-            this.buildSelect()
+            this.buildSelectUI()
             this.hideLoader()
             this.toast.show('Failure to fetch data!')
         });
     }
 
-    buildSelect()
+    fillSelect(elements)
+    {
+        if(!elements) elements = []
+        for(const element of elements)
+        {
+            console.log(element)
+            let option = document.createElement("option");
+            option.value = element.id;
+            option.text = `${element.id} - ${element.currencyName}`;
+            this.from_select.add(option);
+            this.to_select.add(option.cloneNode(true));
+        };
+    }
+    buildSelectUI()
     {
         new Select('#from-select',{
             filtered: 'auto',
@@ -102,9 +125,19 @@ class Converter {
             this.hideLoader()
             this.toast.show('Failure to fetch data!')
         });
- 
-  
+
+
     }
+
+    openDatabase() {
+        if (!navigator.serviceWorker){
+          return Promise.resolve();
+        }
+      
+        return idb.open('cconverter', 1, (upgradeDb) => {
+          const currencies = upgradeDb.createObjectStore('currencies', {keyPath: 'id'});
+        });
+      }
 }
 
 const converter = new Converter();

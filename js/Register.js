@@ -1,5 +1,5 @@
 import Toast from './Toast.js'
-let toast = new Toast()
+const toast = new Toast()
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./Sw.js').then(
         (reg) =>

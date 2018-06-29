@@ -1,4 +1,4 @@
-var staticCacheName = 'cconverter-static-v1';
+var staticCacheName = 'cconverter-static-v2';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -8,7 +8,7 @@ self.addEventListener('install', (event) => {
         './',
         'js/Register.js',
         'js/Toast.js',
-        'js/main.js',
+        'js/Converter.js',
         'css/main.css',
         'libs/select/select.min.css',
         'libs/select/select.min.js'

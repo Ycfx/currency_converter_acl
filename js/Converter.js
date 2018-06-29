@@ -59,12 +59,10 @@ class Converter {
         });
     }
 
-    fillSelect(elements)
+    fillSelect(elements = [])
     {
-        if(!elements) elements = []
         for(const element of elements)
         {
-            console.log(element)
             let option = document.createElement("option");
             option.value = element.id;
             option.text = `${element.id} - ${element.currencyName}`;

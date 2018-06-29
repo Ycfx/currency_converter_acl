@@ -47,6 +47,9 @@ class Converter {
                 for(const [key,value] of Object.entries(response.results))
                     currenciesStore.put(value)
 
+                this.to_select.options.length = 0;
+                this.from_select.options.length = 0;
+                
                 this2.fillSelect(Object.values(response.results))
                 this2.buildSelectUI()
                 this2.hideLoader()
@@ -55,7 +58,7 @@ class Converter {
         .catch(() => {
             this.buildSelectUI()
             this.hideLoader()
-            this.toast.show('Failure to fetch data!')
+            this.toast.show('Failure to fetch data, offline mode activated!')
         });
     }
 
@@ -95,7 +98,7 @@ class Converter {
     convert()
     {
         this.box_result.classList.add('hide')
-
+        this.toast.close()
         if(!this.from_select.value || !this.to_select.value)
         {
             this.toast.show('Please the currencies to convert.')
@@ -110,21 +113,42 @@ class Converter {
         
         this.showLoader()
         const operation = `${this.from_select.value}_${this.to_select.value}`;
-        fetch(`${this.base_url}/convert?q=${operation}&compact=ultra`)
+        const reverse_operation = `${this.to_select.value}_${this.from_select.value}`
+        fetch(`${this.base_url}/convert?q=${operation},${reverse_operation}&compact=ultra`)
         .then((response) => response.json())
         .then((response) => {
-            const rate = response[operation] ? response[operation] : 0;
-            const total = this.amount.value * rate;
-            this.box_result.innerHTML =  `${total.toLocaleString()} ${this.to_select.value}`
-            this.box_result.classList.remove('hide')
-            this.hideLoader()
+            this._dbPromise.then((db) => {
+                const tx = db.transaction('exchange_rates', 'readwrite');
+                const exchangeRatesStore = tx.objectStore('exchange_rates');
+                if(response[operation]) exchangeRatesStore.put({id : operation, rate : response[operation]})
+                if(response[reverse_operation]) exchangeRatesStore.put({id : reverse_operation, rate : response[reverse_operation]})
+            })
+
+            this.calculateAndShow(response[operation] ? response[operation] : 0)
         })
         .catch(() => {
-            this.hideLoader()
-            this.toast.show('Failure to fetch data!')
+            this._dbPromise.then(db => {
+                return db.transaction('exchange_rates')
+                         .objectStore('exchange_rates')
+                         .get(operation);
+            }).then((obj) => {
+                this.calculateAndShow(obj.rate);
+            })
+            .catch(() => {
+                this.hideLoader()
+                this.toast.show('Failure to fetch data!')
+            })
         });
 
 
+    }
+
+    calculateAndShow(rate)
+    {
+        const total = this.amount.value * rate;
+        this.box_result.innerHTML =  `${total.toLocaleString()} ${this.to_select.value}`
+        this.box_result.classList.remove('hide')
+        this.hideLoader()
     }
 
     openDatabase() {
@@ -134,6 +158,7 @@ class Converter {
       
         return idb.open('cconverter', 1, (upgradeDb) => {
           const currencies = upgradeDb.createObjectStore('currencies', {keyPath: 'id'});
+          const exchangeRates = upgradeDb.createObjectStore('exchange_rates', {keyPath: 'id'});
         });
       }
 }

@@ -10,7 +10,7 @@ When the page load, the script display the currencies list which was cached in t
 
 ### Convertion
 for the conversion, the script try to fetch the exchange rate from the api, if it faild it will look for it in the `indexedDB` :
-for example, if the user try to convert from `USD` to `EUR` , the script retrieve both rate for : `USD_EUR` and `EUR_USD` , and cache it in the database to use it when offline.
+for example, if the user try to convert from `USD` to `EUR` , the script retrieve both rate for : `USD_EUR` and `EUR_USD` , and cache it in the database to use it when offline mode activated.
  
 
 The files of interest are located below:
@@ -25,5 +25,5 @@ The files of interest are located below:
 
 ## Demo
 
-Application hoster on github pages : https://ycfx.github.io/currency_converter_acl/
+Application hosted on github pages : https://ycfx.github.io/currency_converter_acl/
 
